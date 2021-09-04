@@ -1,8 +1,35 @@
 @extends('layouts.plantilla')
 
 @section('content')
+    <div class="p-5">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (\Session::has('success'))
+            <div class="alert alert-success">
+                <ul>
+                    <li>{!! \Session::get('success') !!}</li>
+                </ul>
+            </div>
+        @endif
+
+        @if(\Session::has('warning'))
+            <div class="alert alert-warning">
+                <ul>
+                    <li>{!! \Session::get('warning') !!}</li>
+                </ul>
+            </div>
+    @endif
+
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
         Registrarse
     </button>
 
@@ -10,43 +37,24 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Formulario de Registro </h5>
+                <div class="modal-header"style="background:-webkit-linear-gradient(left top,#E430FD  ,#45B39D);">
+                    <h5 class="modal-title" style="align-content: center" id="exampleModalLabel">Formulario de Registro </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <?php
-                // EXPRESIONES REGULARES
-
-                $saludo = "AL SISTEMA DE EXPRESIONES REGULARES";
-
-                $regex = "/^[a-zñ\sA-ZÑ\d]+$/";
-                if (isset($_POST['btnEnviar'])) {
-                    if (preg_match($regex, $_POST['texto'])) {
-                        $resultado = "<span style='color:green'>✓</span>";
-                        $str = preg_replace('/[\s]+/', "", $_POST['texto']);
-                        echo $str;
-                    } else {
-                        $resultado = "<span style='color:red'>✗</span>";
-                    }
-                }
-
-                ?>
 
 
-                <form method="POST">
 
-
+                <form action="{{route('save')}}" method="POST">
+                    @csrf
+                    @method('POST')
                     <div class="row">
                         <div class="col-6 offset-3">
                             <div class="form-group">
-                                <label>Nombre</label>
+                                <label>Nombre (requerido)</label>
                                 <input type="text" name="nombre" class="form-control" placeholder="Ingresa tu Nombre"  >
-                            <!-- <?php if(isset($regex)) {echo '&nbsp;'.$regex.'';} ?> -->
-                                <?php if(isset($resultado)) {echo '&nbsp;'.$resultado.'';} ?>
-
                             </div>
                         </div>
                     </div>
@@ -54,7 +62,7 @@
                     <div class="row">
                         <div class="col-6 offset-3">
                             <div class="form-group">
-                                <label>Apellido</label>
+                                <label>Apellido (requerido)</label>
                                 <input type="text" name="apellido" class="form-control" placeholder="Ingresa tu Apellido" >
                             </div>
                         </div>
@@ -63,7 +71,7 @@
                     <div class="row">
                         <div class="col-6 offset-3">
                             <div class="form-group">
-                                <label>Email</label>
+                                <label>Email (requerido)</label>
                                 <input type="email" name="correo" id="correo" placeholder="Ingresa tu Correo" class="form-control">
                             </div>
                         </div>

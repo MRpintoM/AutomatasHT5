@@ -18,3 +18,4 @@ Route::get('/', function () {
 
 });
 Route::get('/formulario', [\App\Http\Controllers\Registro::class, 'registrar'])->name('registrar');
+Route::post('/formulario2', [\App\Http\Controllers\Registro::class, 'save'])->name('save');
